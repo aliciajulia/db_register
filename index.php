@@ -63,11 +63,11 @@ if (!isset($_GET["id2"])) {
 
 
 //ta bort en attraktion
-if (!isset($_GET["id3"])) {
+if (!isset($_GET["action"])) {
     
 } else {
-    $id3 = $_GET["id3"];
-    $sql = "DELETE FROM attraktioner WHERE id=$id3";
+    $id = $_GET["id"];
+    $sql = "DELETE FROM attraktioner WHERE id=$id";
 
 
     $stmt = $dbh->prepare($sql);
@@ -92,6 +92,7 @@ if (!isset($_GET["id3"])) {
 <html>
     <head>
         <meta charset="UTF-8">
+        <link rel="stylesheet" href="register.css">
         <title>Databas</title>
     </head>
     <body>
@@ -102,7 +103,7 @@ if (!isset($_GET["id3"])) {
             Lägg till attraktion
             <form>
                 NAMN = <input type="text" name="svar">
-                <input type="submit" value="Lägg till"> 
+                <input class="knapp" type="submit" value="Lägg till"> 
                 <input type="hidden" value="Attraktion">
             </form>
 
@@ -113,7 +114,7 @@ if (!isset($_GET["id3"])) {
                 <form>
                     ID PÅ DET DU VILL ÄNDRA = <input type="number" name="id2">
                     NYTT NAMN = <input type="text" name="namn2">
-                    <input type="submit" value="Ändra"> 
+                    <input class="knapp" type="submit" value="Ändra"> 
                     <input type="hidden" value="Attraktion">
                 </form>
 
@@ -123,28 +124,31 @@ if (!isset($_GET["id3"])) {
                     Ta bort attraktion
                     <br>
                     VÄLJ ATTRAKTION 
-                    <select>
-                        <!--                        <option value="volvo">-->
-                        <?php
-                        $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_SERVER . ';charset=utf8', DB_USER, DB_PASSWORD);
+                    <form>
+                        <select name="id">
+                            <!--                        <option value="volvo">-->
+                            <?php
+                            $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_SERVER . ';charset=utf8', DB_USER, DB_PASSWORD);
 
-                        $stmt = $dbh->prepare($sql);
-                        $stmt->execute();
+                            $stmt = $dbh->prepare($sql);
+                            $stmt->execute();
 
-                        $sql = "SELECT * FROM attraktioner";
-                        $stmt = $dbh->prepare($sql);
-                        $stmt->execute();
+                            $sql = "SELECT * FROM attraktioner";
+                            $stmt = $dbh->prepare($sql);
+                            $stmt->execute();
 
-                        $leksak = $stmt->fetchAll();
+                            $leksak = $stmt->fetchAll();
 
 
-                        foreach ($leksak as $namn) {
-                            echo "<option value=".$namn["id"].">".$namn["namn"]."</option>";
-                            echo "<br>";
-                        }
-                        ?>
-                        <!--                        </option>-->
-                    </select>
+                            foreach ($leksak as $namn) {
+                                echo "<option value=" . $namn["id"] . ">" . $namn["namn"] . "</option>";
+                                echo "<br>";
+                            }
+                            ?>
+                        </select>
+                        <input class="knapp" type="submit" value="Delete" name="action">
+                        <input type="hidden" value="Attraktion">
+                    </form>
                     <!--                    <form>
                                             <
                                             ID =  <input type="number" name="id3">

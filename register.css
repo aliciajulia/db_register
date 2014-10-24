@@ -1,0 +1,17 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.attraktioner {
+    font-family: verdana;
+    
+}
+
+.knapp {
+    border: 2px;
+    border-radius: 2px;
+    padding: 5px;
+    background-color: blueviolet;
+    color: white;
+}
