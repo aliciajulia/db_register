@@ -6,12 +6,18 @@ define("DB_NAME", "lekpark");
 
 $dbh = new PDO('mysql:dbname=' . DB_NAME . ';host=' . DB_SERVER . ';charset=utf8', DB_USER, DB_PASSWORD);
 
+$svar = filter_input(INPUT_POST, 'svar', FILTER_SANITIZE_SPECIAL_CHARS);
+$id2 = filter_input(INPUT_POST, 'id2', FILTER_SANITIZE_SPECIAL_CHARS);
+$id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_SPECIAL_CHARS);
+$svar2 = filter_input(INPUT_POST, 'namn2', FILTER_SANITIZE_SPECIAL_CHARS);
+
+
 //var_dump($_GET["svar"]);
 //<!--lägg till attraktion formulär-->
-if (!isset($_GET["svar"])) {
+if (!isset($_POST["svar"])) {
     
 } else {
-    $svar = $_GET["svar"];
+    $svar = filter_input(INPUT_POST, 'svar', FILTER_SANITIZE_SPECIAL_CHARS);
     $sql = "INSERT INTO attraktioner(id, namn) VALUES ('','$svar')";
 
     $stmt = $dbh->prepare($sql);
@@ -29,17 +35,20 @@ if (!isset($_GET["svar"])) {
         echo $leksak["id"];
         echo " ";
         echo $leksak["namn"];
+        echo "<form type='POST'>
+             <input class='knapp' type='submit' value='Delete'> 
+        </form>";
         echo "<br>";
     }
 }
 
 
 //ändra attraktionen
-if (!isset($_GET["id2"])) {
+if (!isset($_POST["id2"])) {
     
 } else {
-    $id2 = $_GET["id2"];
-    $svar2 = $_GET["namn2"];
+    $id2 = filter_input(INPUT_POST, 'id2', FILTER_SANITIZE_SPECIAL_CHARS);
+    $svar2 = filter_input(INPUT_POST, 'namn2', FILTER_SANITIZE_SPECIAL_CHARS);
     $sql = "UPDATE attraktioner SET namn='$svar2' WHERE id=$id2";
 
     $stmt = $dbh->prepare($sql);
@@ -63,10 +72,10 @@ if (!isset($_GET["id2"])) {
 
 
 //ta bort en attraktion
-if (!isset($_GET["action"])) {
+if (!isset($_POST["action"])) {
     
 } else {
-    $id = $_GET["id"];
+    $id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_SPECIAL_CHARS);
     $sql = "DELETE FROM attraktioner WHERE id=$id";
 
 
@@ -101,7 +110,7 @@ if (!isset($_GET["action"])) {
         <!--lägg till attraktion formulär-->
         <div class="attraktioner">
             Lägg till attraktion
-            <form>
+            <form method="POST">
                 NAMN = <input type="text" name="svar">
                 <input class="knapp" type="submit" value="Lägg till"> 
                 <input type="hidden" value="Attraktion">
@@ -111,7 +120,7 @@ if (!isset($_GET["action"])) {
             <!--ändra attraktion formulär-->
             <div class="attraktioner">
                 Ändra attraktion
-                <form>
+                <form method="POST">
                     ID PÅ DET DU VILL ÄNDRA = <input type="number" name="id2">
                     NYTT NAMN = <input type="text" name="namn2">
                     <input class="knapp" type="submit" value="Ändra"> 
@@ -124,7 +133,7 @@ if (!isset($_GET["action"])) {
                     Ta bort attraktion
                     <br>
                     VÄLJ ATTRAKTION 
-                    <form>
+                    <form method="POST">
                         <select name="id">
                             <!--                        <option value="volvo">-->
                             <?php
@@ -156,6 +165,7 @@ if (!isset($_GET["action"])) {
                                             <input type="hidden" value="Attraktion">
                                         </form>-->
                 </div>
-                </body>
-                </html>
+            </div>
+    </body>
+</html>
 
